@@ -5,8 +5,6 @@ import re
 from pampy import match, _
 from model import content, template_article, HOSTING_URL_BASE, SECURITY_KEY
 
-from collections import defaultdict
-
 
 
 def get_link(sku):
@@ -49,6 +47,7 @@ def generate_data(image: tuple):
         return get_article(sku, revision, template_article)
 
 
+# recursion.
 def rec_append(serie, content):
     if len(serie) == 0:
         return []
@@ -56,10 +55,13 @@ def rec_append(serie, content):
         sku, revision = serie[0]
         art = get_article(sku, revision, template_article)
         art_copy = art.copy()
-        print(art_copy)
-        art_copy["body"] = {"title": sku, "altText": revision,"source": {
-            "url": "https://ptsayoud.blob.core.windows.net/files/"+ sku +".jpg?sp=r&st=2021-04-27T14:01:18Z&se=2022-12-09T23:01:18Z&spr=https&sv=2020-02-10&sr=c&sig=LfMrP6BjpzsbctyYc3o2Y2zgOknf08aPVG8QaxjNHpM%3D"
-        }}
+        art_copy["body"] = {
+            "title": sku,
+            "altText": revision,
+            "source": {
+            "url": HOSTING_URL_BASE + sku + SECURITY_KEY
+            }
+        }
         content["content"].append(art_copy)
         return rec_append(serie[1:], content)
 
@@ -67,12 +69,3 @@ def rec_append(serie, content):
 if __name__ == "__main__":
     rec_append([image for image in all_images()], content)
     create_json(content, "contents.json")
-
-
-
-# if __name__ == "__main__":
-#     for n,image in enumerate(all_images()):
-#         sku, revision = image
-#         art = get_article(sku, revision, template_article)
-#         content["content"].append(art)
-#     create_json(content, "contents.json")
