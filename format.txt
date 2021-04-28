@@ -1,0 +1,15 @@
+{
+      "content": [{
+            "type": "cms_image",
+            "urlName": "<SKU_NUMBER> + "_<Option if more than 1 image>",
+            "status": "Draft",
+            "body": {
+                 "title": "<SKU_NUMBER> + "_<Option if more than 1 image>",
+                 "altText": "<Revision_NUM if exist>",
+                 "source": {
+                      "url": "<HOSTING URL BASE>+<SKU_NUMBER or link to image>.jpg?<Other KEY FOR SECURITY>"
+                  }
+              }
+           }
+          ]
+}
