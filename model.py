@@ -1,10 +1,12 @@
+from collections import defaultdict
+
 # Frame
 content = {"content": []}
 
 # Model of one article.
 template_article = {
     "type": "cms_image",
-    "urlName": "lampplus",
+    "urlName": "",
     "status": "Draft",
     "body": {"title": "", "altText": "", "source": {"url": ""}},
 }
