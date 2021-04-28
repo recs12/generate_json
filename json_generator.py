@@ -56,9 +56,10 @@ def rec_append(serie, content):
         sku, revision = serie[0]
         art = get_article(sku, revision, template_article)
         art_copy = art.copy()
-        body_copy = art["body"]
-        body_copy["title"] = sku
-        art_copy["body"] = body_copy
+        print(art_copy)
+        art_copy["body"] = {"title": sku, "altText": revision,"source": {
+            "url": "https://ptsayoud.blob.core.windows.net/files/"+ sku +".jpg?sp=r&st=2021-04-27T14:01:18Z&se=2022-12-09T23:01:18Z&spr=https&sv=2020-02-10&sr=c&sig=LfMrP6BjpzsbctyYc3o2Y2zgOknf08aPVG8QaxjNHpM%3D"
+        }}
         content["content"].append(art_copy)
         return rec_append(serie[1:], content)
 
