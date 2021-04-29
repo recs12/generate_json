@@ -6,7 +6,6 @@ from pampy import match, _
 from model import content, template_article, HOSTING_URL_BASE, SECURITY_KEY
 
 
-
 def get_link(sku):
     return HOSTING_URL_BASE + sku + SECURITY_KEY
 
@@ -43,8 +42,8 @@ def create_json(data, file_json):
 
 
 def generate_data(image: tuple):
-        sku, revision = image
-        return get_article(sku, revision, template_article)
+    sku, revision = image
+    return get_article(sku, revision, template_article)
 
 
 # recursion.
@@ -58,14 +57,20 @@ def rec_append(serie, content):
         art_copy["body"] = {
             "title": sku,
             "altText": revision,
-            "source": {
-            "url": HOSTING_URL_BASE + sku + SECURITY_KEY
-            }
+            "source": {"url": HOSTING_URL_BASE + sku + SECURITY_KEY},
         }
         content["content"].append(art_copy)
         return rec_append(serie[1:], content)
 
 
+def sliced_by_n(images, n=2000):
+    """Slice the images by sequences of n elements."""
+    return [images[i : i + n] for i in range(0, len(images), n)]
+
+
 if __name__ == "__main__":
-    rec_append([image for image in all_images()], content)
-    create_json(content, "contents.json")
+    for n, sequence in enumerate(sliced_by_n([image for image in all_images()], 4)):
+        print(sequence)
+        rec_append(sequence, content)
+        create_json(content, f"contents{n}.json")
+        content = {"content": []}
